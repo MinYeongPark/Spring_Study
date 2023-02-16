@@ -12,12 +12,19 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringConfig {
 
-    private EntityManager em;
+    private final MemberRepository memberRepository;
 
-    @Autowired
-    public SpringConfig(EntityManager em) {
-        this.em = em;
+    @Autowired // 생성자가 1개 이면 생략 가능
+    public SpringConfig(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
+
+    //    private EntityManager em;
+//
+//    @Autowired
+//    public SpringConfig(EntityManager em) {
+//        this.em = em;
+//    }
 
     //    private DataSource dataSource; // 스프링이 데이터베이스와 연결할 수 있는 정보가 있는 것을 만들어주고 주입해줌.
 //
@@ -26,16 +33,22 @@ public class SpringConfig {
 //        this.dataSource = dataSource;
 //    }
 
-    @Bean
-    public MemberService memberService() {
-        return new MemberService(memberRepository());
-    }
 
     @Bean
-    public MemberRepository memberRepository() {
+    public MemberService memberService() {
+        return new MemberService(memberRepository);
+    }
+
+//    @Bean
+//    public MemberService memberService() {
+//        return new MemberService(memberRepository());
+//    }
+
+//    @Bean
+//    public MemberRepository memberRepository() {
 //        return new MemoryMemberRepository();
 //        return new JdbcMemberRepository(dataSource); // 이 조립하는 부분만 수정하면 딱 연결되는 게 스프링의 장점.
 //        return new JdbcTemplateMemberRepository(dataSource);
-        return new JpaMemberRepository(em);
-    }
+//        return new JpaMemberRepository(em);
+//    }
 }
