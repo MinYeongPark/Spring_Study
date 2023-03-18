@@ -23,6 +23,7 @@ public class MemberController {
     @Autowired
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
+        System.out.println("memberService = " + memberService.getClass());
     }
 
     // 3) Setter 주입 -> 누군가가 호출할 때 public으로 노출되어야 함. 중간에 잘못 바꾸면 문제가 될 수 있음.

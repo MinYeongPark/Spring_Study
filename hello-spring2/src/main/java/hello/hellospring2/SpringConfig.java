@@ -1,5 +1,6 @@
 package hello.hellospring2;
 
+import hello.hellospring2.aop.TimeTraceAop;
 import hello.hellospring2.repository.*;
 import hello.hellospring2.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,10 @@ public class SpringConfig {
 //        return new JdbcMemberRepository(dataSource); // 이 조립하는 부분만 수정하면 딱 연결되는 게 스프링의 장점.
 //        return new JdbcTemplateMemberRepository(dataSource);
 //        return new JpaMemberRepository(em);
+//    }
+
+//    @Bean // AOP는 정형화된 것은 아니어서 스프링빈에 직접 등록해주면 좋음.
+//    public TimeTraceAop TimeTraceAop() {
+//        return new TimeTraceAop();
 //    }
 }
