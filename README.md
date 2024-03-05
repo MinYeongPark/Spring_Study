@@ -1,6 +1,9 @@
 # Spring_Study
-스프링 기초 강의 실습 리포지토리
+인프런 김영한 스프링 강의 실습 리포지토리
 
 <br>
 
-[강의](http://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%9E%85%EB%AC%B8-%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8)
+|폴더|강의|수강기간|
+|------|---|---|
+|class1|[스프링 입문 - 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술](http://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%9E%85%EB%AC%B8-%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8)|2023.01.13. ~ 2023.03.18.|
+|class2|[실전! 스프링 부트와 JPA 활용1 - 웹 애플리케이션 개발](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-%ED%99%9C%EC%9A%A9-1/dashboard)|2024.02.29. ~ 2024.03.|
