@@ -1,6 +1,7 @@
 package com.fastcampus.batchcampus;
 
 import com.fastcampus.batchcampus.batch.BatchStatus;
+import com.fastcampus.batchcampus.batch.Job;
 import com.fastcampus.batchcampus.batch.JobExecution;
 import com.fastcampus.batchcampus.customer.Customer;
 import com.fastcampus.batchcampus.customer.CustomerRepository;
@@ -14,8 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class DormantBatchJobTest {
 
@@ -23,7 +22,7 @@ class DormantBatchJobTest {
     private CustomerRepository customerRepository;
 
     @Autowired
-    private DormantBatchJob dormantBatchJob;
+    private Job dormantBatchJob;
 
     @BeforeEach
     public void setup() {
@@ -108,7 +107,7 @@ class DormantBatchJobTest {
     void test4() {
 
         // given
-        final DormantBatchJob dormantBatchJob = new DormantBatchJob(null);
+        final Job dormantBatchJob = new Job(null);
 
         // when
         final JobExecution result = dormantBatchJob.execute();
