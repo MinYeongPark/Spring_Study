@@ -15,14 +15,14 @@ public class JpaMain {
         tx.begin(); // DB 트랜잭션 시작
 
         try {
-            Member member = new Member(200L, "member200");
-            em.persist(member);
+            Member member = em.find(Member.class, 150L);
+            member.setName("AAAAA"); // 아직 영속 상태!
 
-            em.flush(); // 미리 DB에 반영하거나 쿼리를 미리 보고 싶다면 이걸 직접 호출해주면 됨
+            em.detach(member); // 준영속상태가 됨 -> JPA에서 관리 x
 
             System.out.println("--------------------");
 
-            tx.commit();
+            tx.commit(); // 트랜잭션 커밋 시 아무런 일도 일어나지 않게 됨.
         } catch (Exception e) {
             e.printStackTrace();
             tx.rollback();
