@@ -15,10 +15,10 @@ public class JpaMain {
         tx.begin(); // DB 트랜잭션 시작
 
         try {
+            Member member = new Member(200L, "member200");
+            em.persist(member);
 
-            // 영속
-            Member member = em.find(Member.class, 150L);
-            member.setName("ZZZZZ"); // 무조건 업데이트를 날리게 됨.
+            em.flush(); // 미리 DB에 반영하거나 쿼리를 미리 보고 싶다면 이걸 직접 호출해주면 됨
 
             System.out.println("--------------------");
 
