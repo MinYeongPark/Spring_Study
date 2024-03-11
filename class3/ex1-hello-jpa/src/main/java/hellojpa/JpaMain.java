@@ -15,33 +15,12 @@ public class JpaMain {
         tx.begin(); // DB 트랜잭션 시작
 
         try {
-            // 멤버 추가
-//            Member member = new Member();
-//            member.setId(1L);
-//            member.setName("HelloA");
-//            em.persist(member);
-//            tx.commit();
 
-            // 멤버 조회
-            Member findMember = em.find(Member.class, 1L);
-//            System.out.println("findMember.id = " + findMember.getId());
-//            System.out.println("findMember.name = " + findMember.getName());
+            // 영속
+            Member member = em.find(Member.class, 150L);
+            member.setName("ZZZZZ"); // 무조건 업데이트를 날리게 됨.
 
-            // 멤버 삭제
-//            em.remove(findMember);
-
-            // 멤버 수정
-            findMember.setName("HelloJPA");
-
-            // 쿼리
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(1) // 페이징
-                    .setMaxResults(10)
-                    .getResultList();
-
-            for (Member mem : result) {
-                System.out.println("resultMember.name = " + mem.getName());
-            }
+            System.out.println("--------------------");
 
             tx.commit();
         } catch (Exception e) {
