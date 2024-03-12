@@ -1,28 +1,35 @@
 package com.fastcampus.batchcampus.batch;
 
-import com.fastcampus.batchcampus.batch.BatchStatus;
-import com.fastcampus.batchcampus.batch.JobExecution;
-import com.fastcampus.batchcampus.batch.JobExecutionListener;
-import com.fastcampus.batchcampus.batch.Tasklet;
-import com.fastcampus.batchcampus.customer.Customer;
-import com.fastcampus.batchcampus.customer.CustomerRepository;
-import com.fastcampus.batchcampus.customer.EmailProvider;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Component
 public class Job {
 
     private final Tasklet tasklet;
     private final JobExecutionListener jobExecutionListener;
 
+    public Job(Tasklet tasklet) {
+        this(tasklet, null);
+    }
+
+    @Builder
+    public Job(ItemReader<?> itemReader, ItemProcessor<?, ?> itemProcessor, ItemWriter<?> itemWriter, JobExecutionListener jobExecutionListener) {
+        this(new SimpleTasklet(itemReader, itemProcessor, itemWriter), jobExecutionListener);
+    }
+
     public Job(Tasklet tasklet, JobExecutionListener jobExecutionListener) {
         this.tasklet = tasklet;
-        this.jobExecutionListener = jobExecutionListener;
+        this.jobExecutionListener = Objects.requireNonNullElseGet(jobExecutionListener, () -> new JobExecutionListener() {
+            @Override
+            public void beforeJob(JobExecution jobExecution) {
+            }
+
+            @Override
+            public void afterJob(JobExecution jobExecution) {
+            }
+        });
     }
 
     public JobExecution execute() {

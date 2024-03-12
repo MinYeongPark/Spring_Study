@@ -1,14 +1,26 @@
 package com.fastcampus.batchcampus.application;
 
 import com.fastcampus.batchcampus.batch.Job;
+import com.fastcampus.batchcampus.batch.SimpleTasklet;
+import com.fastcampus.batchcampus.customer.Customer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DormantBatchConfiguration {
 
-    public Job dormantBatchJob() {
-        return new Job(
-
-        )
+    @Bean
+    public Job dormantBatchJob(
+            DormantBatchItemReader itemReader,
+            DormantBatchItemProcessor itemProcessor,
+            DormantBatchItemWriter itemWriter,
+            DormantBatchJobExecutionListener listener
+    ) {
+        return Job.builder()
+                .itemReader(itemReader)
+                .itemProcessor(itemProcessor)
+                .itemWriter(itemWriter)
+                .jobExecutionListener(listener)
+                .build();
     }
 }
