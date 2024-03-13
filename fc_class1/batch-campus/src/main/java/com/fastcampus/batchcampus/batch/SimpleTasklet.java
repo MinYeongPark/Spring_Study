@@ -1,12 +1,7 @@
 package com.fastcampus.batchcampus.batch;
 
-import com.fastcampus.batchcampus.batch.ItemProcessor;
-import com.fastcampus.batchcampus.batch.ItemReader;
-import com.fastcampus.batchcampus.batch.ItemWriter;
-import com.fastcampus.batchcampus.batch.Tasklet;
 import org.springframework.stereotype.Component;
 
-@Component
 public class SimpleTasklet<I, O> implements Tasklet {
 
     private final ItemReader<I> itemReader;
