@@ -30,8 +30,12 @@ public class JpaMain {
             em.clear(); // 영속성 컨텍스트 초기화
 
             Member findMember = em.find(Member.class, member.getId());
-            Team findTeam = findMember.getTeam();
-            System.out.println("findTeam = " + findTeam.getName());
+
+            List<Member> members = findMember.getTeam().getMembers();
+
+            for (Member m : members) {
+                System.out.println("m = " + m.getUsername());
+            }
 
             tx.commit(); // 트랜잭션 커밋 시 아무런 일도 일어나지 않게 됨.
         } catch (Exception e) {
