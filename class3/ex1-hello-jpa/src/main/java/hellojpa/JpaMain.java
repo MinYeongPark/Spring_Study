@@ -15,12 +15,12 @@ public class JpaMain {
         tx.begin(); // DB 트랜잭션 시작
 
         try {
-            Member member = em.find(Member.class, 150L);
-            member.setName("AAAAA"); // 아직 영속 상태!
+            Member member = new Member();
+            member.setId(3L);
+            member.setUsername("C");
+            member.setRoleType(RoleType.GUEST);
 
-            em.detach(member); // 준영속상태가 됨 -> JPA에서 관리 x
-
-            System.out.println("--------------------");
+            em.persist(member);
 
             tx.commit(); // 트랜잭션 커밋 시 아무런 일도 일어나지 않게 됨.
         } catch (Exception e) {
