@@ -17,6 +17,11 @@ public class Team {
     @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();
 
+    public void addMember(Member member) {
+        member.setTeam(this);
+        members.add(member);
+    }
+
     public Long getId() {
         return id;
     }
@@ -39,5 +44,14 @@ public class Team {
 
     public void setMembers(List<Member> members) {
         this.members = members;
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", members=" + members + // 이 컬렉션 하나하나 안에 있는 toString을 다 호출함!
+                '}';
     }
 }

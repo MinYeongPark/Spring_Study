@@ -2,10 +2,6 @@ package hellojpa;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-
 @Entity
 public class Member {
     @Id @GeneratedValue
@@ -44,5 +40,14 @@ public class Member {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", team=" + team + // 여기에서 team.toString()을 호출함
+                '}';
     }
 }
