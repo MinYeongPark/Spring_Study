@@ -16,11 +16,14 @@ public class JpaMain {
 
         try {
             Member member = new Member();
-            member.setId(3L);
             member.setUsername("C");
-            member.setRoleType(RoleType.GUEST);
+
+            System.out.println("===================");
 
             em.persist(member);
+
+            System.out.println("member.id = " + member.getId()  );
+            System.out.println("===================");
 
             tx.commit(); // 트랜잭션 커밋 시 아무런 일도 일어나지 않게 됨.
         } catch (Exception e) {
