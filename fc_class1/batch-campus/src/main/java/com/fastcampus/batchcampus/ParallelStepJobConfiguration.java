@@ -17,8 +17,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 
 @Slf4j
-@Configuration
-public class ParallelStepJobConfig {
+//@Configuration
+public class ParallelStepJobConfiguration {
 
     // flow1 (step1, step2)
     //                            -> 이 두개가 다 끝난 후 step4 실행
