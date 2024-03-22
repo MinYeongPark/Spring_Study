@@ -15,19 +15,20 @@ public class JpaMain {
         tx.begin(); // DB 트랜잭션 시작
 
         try {
+            Movie movie = new Movie();
+            movie.setDirector("a");
+            movie.setActor("bbbb");
+            movie.setName("바람과함께사라지다");
+            movie.setPrice(10000);
 
-            Member member = new Member();
-            member.setUsername("member1");
+            em.persist(movie);
+            em.flush();
+            em.clear();
 
-            em.persist(member);
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            System.out.println("findMovie = " + findMovie);
 
-            Team team = new Team();
-            team.setName("teamA");
-            team.getMembers().add(member);
-
-            em.persist(team);
-
-            tx.commit(); // 트랜잭션 커밋 시 아무런 일도 일어나지 않게 됨.
+            tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
             tx.rollback();
