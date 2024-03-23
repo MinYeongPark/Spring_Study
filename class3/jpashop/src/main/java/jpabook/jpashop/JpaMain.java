@@ -1,9 +1,7 @@
 package jpabook.jpashop;
 
 import jakarta.persistence.*;
-import jpabook.jpashop.domain.Member;
-import jpabook.jpashop.domain.Order;
-import jpabook.jpashop.domain.OrderItem;
+import jpabook.jpashop.domain.*;
 
 import java.util.List;
 
@@ -19,13 +17,11 @@ public class JpaMain {
 
         try {
 
-            Order order = new Order();
-            em.persist(order);
+            Book book = new Book();
+            book.setName("JPA");
+            book.setAuthor("김영한");
 
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order);
-
-            em.persist(orderItem);
+            em.persist(book);
 
             tx.commit(); // 트랜잭션 커밋 시 아무런 일도 일어나지 않게 됨.
         } catch (Exception e) {
