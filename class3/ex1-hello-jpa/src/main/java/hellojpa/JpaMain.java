@@ -1,9 +1,8 @@
 package hellojpa;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import org.hibernate.Hibernate;
+import org.hibernate.jpa.internal.PersistenceUnitUtilImpl;
 
 public class JpaMain {
 
@@ -16,15 +15,17 @@ public class JpaMain {
         tx.begin(); // DB 트랜잭션 시작
 
         try {
-            Member member = new Member();
-            member.setUsername("user1");
-            member.setCreatedBy("kim");
-            member.setCreatedDate(LocalDateTime.now());
-
-            em.persist(member);
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            em.persist(member1);
 
             em.flush();
             em.clear();
+
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("refMember = " + refMember.getClass());
+//            refMember.getUsername(); // 이것도 강제 초기화이긴 하지만.. 아래 방법이 좀 더 깔쌈함(?)
+            Hibernate.initialize(refMember); // 강제 초기화
 
             tx.commit();
         } catch (Exception e) {
