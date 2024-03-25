@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.jpa.internal.PersistenceUnitUtilImpl;
 
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
 
@@ -18,15 +19,37 @@ public class JpaMain {
 
         try {
 
-            Address address = new Address("city", "street", "10000");
-
             Member member = new Member();
             member.setUsername("member1");
-            member.setHomeAddress(address);
+            member.setHomeAddress(new Address("homeCity", "street", "10000"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
+
+            member.getAddressHistory().add(new AddressEntity("o1d1", "street", "10000"));
+            member.getAddressHistory().add(new AddressEntity("o1d2", "street", "10000"));
+
             em.persist(member);
 
-            Address newAddress = new Address("NewCity", address.getStreet(), address.getZipcode());
-            member.setHomeAddress(address);
+            em.flush();
+            em.clear();
+
+            System.out.println("================= START =================");
+            Member findMember = em.find(Member.class, member.getId());
+
+            // homeCity -> newCity
+//            findMember.getHomeAddress().setCity("newCity"); // 이렇게는 안 됨!!
+//            Address a = findMember.getHomeAddress();
+//            findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
+//
+//            // 치킨 -> 한식으로 변경
+//            findMember.getFavoriteFoods().remove("치킨");
+//            findMember.getFavoriteFoods().add("한식");
+
+//            findMember.getAddressHistory().remove(new Address("o1d1", "street", "10000"));
+//            findMember.getAddressHistory().add(new Address("o1d1", "street", "10000"));
+
 
             tx.commit();
         } catch (Exception e) {
