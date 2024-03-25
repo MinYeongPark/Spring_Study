@@ -15,6 +15,7 @@ public class Member extends BaseEntity {
     @JoinColumn
     private Team team;
 
+
     public Long getId() {
         return id;
     }
