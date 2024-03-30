@@ -19,10 +19,6 @@ public class Member {
     @Column(name = "USERNAME")
     private String username;
 
-    // 기간
-    @Embedded
-    private Period workPeriod;
-
     // 주소
     @Embedded
     private Address homeAddress;
@@ -33,12 +29,6 @@ public class Member {
     )
     @Column(name = "FOOD_NAME")
     private Set<String> favoriteFoods = new HashSet<>();
-
-//    @ElementCollection
-//    @CollectionTable(name = "ADDRESS", joinColumns =
-//        @JoinColumn(name = "MEMBER_ID")
-//    )
-//    private List<Address> addressHistory = new ArrayList<>();
 
     @OneToMany(cascade = ALL, orphanRemoval = true)
     @JoinColumn(name = "MEMBER_ID")
@@ -74,14 +64,6 @@ public class Member {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Period getWorkPeriod() {
-        return workPeriod;
-    }
-
-    public void setWorkPeriod(Period workPeriod) {
-        this.workPeriod = workPeriod;
     }
 
     public Address getHomeAddress() {
