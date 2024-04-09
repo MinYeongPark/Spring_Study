@@ -4,6 +4,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.util.List;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -34,13 +35,29 @@ public class Main {
 //                System.out.println(jedis.lpop("queue2"));
 
 
-                // 3. block BRPOP, BLPOP
-                while (true) {
-                    List<String> blpop = jedis.blpop(10, "queue:blocking");
-                    if (blpop != null) {
-                        blpop.forEach(System.out::println);
-                    }
-                }
+//                // 3. block BRPOP, BLPOP
+//                while (true) {
+//                    List<String> blpop = jedis.blpop(10, "queue:blocking");
+//                    if (blpop != null) {
+//                        blpop.forEach(System.out::println);
+//                    }
+//                }
+
+                jedis.sadd("users:500:follow", "100", "200", "300");
+                jedis.srem("users:500:follow", "100");
+
+                Set<String> smembers = jedis.smembers("users:500:follow");
+                smembers.forEach(System.out::println);
+
+                System.out.println(jedis.sismember("users:500:follow", "200"));
+                System.out.println(jedis.sismember("users:500:follow", "120"));
+
+                // s inter
+                Set<String> sinter = jedis.sinter("users:500:follow", "users:100:follow");
+                sinter.forEach(System.out::println);
+
+                // s card
+                System.out.println(jedis.scard("users:500:follow"));
             }
         }
     }
