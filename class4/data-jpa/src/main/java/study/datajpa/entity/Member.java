@@ -1,24 +1,41 @@
 package study.datajpa.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"id", "username", "age"})
 public class Member {
 
     @Id @GeneratedValue
+    @Column(name = "member_id")
     private Long id;
 
     private String username;
 
-    protected Member() { // JPA는 기본 생성자가 있어야 한다. // 프록시 기술 등등 쓸 때 private으로 하면 막히기 때문에 열어줘야 한다.
-    }
+    private int age;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     public Member(String username) {
         this.username = username;
+    }
+
+    public Member(String username, int age, Team team) {
+        this.username = username;
+        this.age = age;
+
+        if (team != null) {
+            changeTeam(team);
+        }
+    }
+
+    public void changeTeam(Team team) {
+        this.team = team;
+        team.getMembers().add(this);
     }
 }
