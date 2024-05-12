@@ -57,7 +57,7 @@ public class UserService {
 
     // CACHE1이라는 prefix에 키 값으로는 user:(전달받은 인자 id) 로 된다.
     // 한번 호출하게 되면 캐시에 저장되게 되고, 다음에 질의할 때 @Cacheable 에서 먼저 동작해서 캐시 값을 먼저 확인하게 된다.
-//    @Cacheable(cacheNames = CACHE1, key = "'user:' + #id")
+    @Cacheable(cacheNames = CACHE1, key = "'user:' + #id")
     public User getUser3(final Long id) {
         return userRepository.findById(id).orElseThrow();
     }
