@@ -48,4 +48,10 @@ public class MemberJpaRepository {
                 .setParameter("age", age)
                 .getResultList();
     }
+
+    public List<Member> findByUsername(String username) {
+        return em.createNamedQuery("Member.findByUsername", Member.class) // 네임드쿼리 호출
+                .setParameter("username", username)
+                .getResultList();
+    }
 }
