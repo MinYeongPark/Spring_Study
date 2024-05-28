@@ -67,7 +67,7 @@ class Operator2Test {
     @Test
     void monoZip() {
         StepVerifier.create(operator2.monoZip())
-                .expectNext(6)
+                .expectNext(6) // 1 + 2 + 3
                 .verifyComplete();
     }
 }
