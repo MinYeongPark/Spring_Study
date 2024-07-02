@@ -1,3 +1,9 @@
 logging:
   level:
     root: INFO
+
+spring:
+  r2dbc:
+    url: r2dbc:mysql://localhost:3307/mindb
+    username: root
+    password: min

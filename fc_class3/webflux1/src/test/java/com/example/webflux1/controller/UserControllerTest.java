@@ -96,7 +96,7 @@ class UserControllerTest {
     @Test
     void deleteUser() {
         when(userService.deleteById(1L)).thenReturn(
-                Mono.just(1) // 값이 잘 삭제된 경우 Mono 1 리턴됨
+                Mono.empty() // 값이 잘 삭제된 경우 아무 값 리턴 x
         );
 
 
