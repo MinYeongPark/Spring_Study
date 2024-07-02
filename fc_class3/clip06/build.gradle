@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id "io.spring.dependency-management" version "1.0.7.RELEASE"
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "io.projectreactor:reactor-bom:2023.0.6"
+    }
+}
+
+dependencies {
+    implementation 'io.projectreactor:reactor-core'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testImplementation 'io.projectreactor:reactor-test'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
