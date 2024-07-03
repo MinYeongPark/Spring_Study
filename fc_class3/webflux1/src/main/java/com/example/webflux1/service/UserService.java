@@ -32,6 +32,10 @@ public class UserService {
         return userR2dbcRepository.deleteById(id);
     }
 
+    public Mono<Void> deleteByName(String name) {
+        return userR2dbcRepository.deleteByName(name);
+    }
+
     public Mono<User> update(Long id, String name, String email) {
         // 1) 해당 사용자를 찾는다.
         // 2) 데이터를 변경하고 저장한다.
