@@ -28,6 +28,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 	implementation 'io.asyncer:r2dbc-mysql:1.0.2' // spi 1.0.0 (Springboot3) 에 호환됨
 	implementation 'org.projectlombok:lombok:1.18.22'
+	implementation 'io.projectreactor.tools:blockhound:1.0.8.RELEASE' // blockhound
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
