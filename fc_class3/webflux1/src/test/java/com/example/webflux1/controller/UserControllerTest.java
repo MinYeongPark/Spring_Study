@@ -3,6 +3,7 @@ package com.example.webflux1.controller;
 import com.example.webflux1.dto.UserCreateRequest;
 import com.example.webflux1.dto.UserResponse;
 import com.example.webflux1.repository.User;
+import com.example.webflux1.service.PostServiceV2;
 import com.example.webflux1.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,13 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.blockhound.BlockHound;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.awt.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,12 +27,35 @@ import static org.mockito.Mockito.when;
 @WebFluxTest(UserController.class)
 @AutoConfigureWebTestClient
 class UserControllerTest {
+    static { // 테스트코드 시작 시 BlockHound 를 줌
+        BlockHound.install(
+                // 특정 blocking 은 실패로 간주하지 않겠다는 뜻
+                builder -> builder.allowBlockingCallsInside("reactor.test.MessageFormatter", "fail")
+        );
+    }
 
     @Autowired
     private WebTestClient webTestClient; // 테스트용 웹 클라이언트
 
     @MockBean
     private UserService userService; // userController에서 가짜 userService를 활용하게 하기 위함!
+
+    @MockBean
+    private PostServiceV2 postServiceV2;
+
+    @Test
+    void blockHoundTest() {
+        StepVerifier.create(Mono.delay(Duration.ofSeconds(1))
+                .doOnNext(it -> {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }))
+                .verifyComplete();
+
+    }
 
     @Test
     void createUser() {
