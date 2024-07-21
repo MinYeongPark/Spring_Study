@@ -116,4 +116,24 @@ class UserQueueServiceTest {
                 .expectNext(1L) // 다시 처음부터 시작이라서 대기 인원이 1명이니까 1을 받아야 함
                 .verifyComplete();
     }
+
+    @Test
+    void getRank() {
+        StepVerifier.create(userQueueService.registerWaitQueue("default", 100L)
+                        .then(userQueueService.getRank("default", 100L)))
+                .expectNext(1L)
+                .verifyComplete();
+
+        StepVerifier.create(userQueueService.registerWaitQueue("default", 101L)
+                        .then(userQueueService.getRank("default", 101L)))
+                .expectNext(2L)
+                .verifyComplete();
+    }
+
+    @Test
+    void emptyRank() {
+        StepVerifier.create(userQueueService.getRank("default", 100L))
+                .expectNext(-1L) // 아무것도 없으니까 -1 리턴됨
+                .verifyComplete();
+    }
 }

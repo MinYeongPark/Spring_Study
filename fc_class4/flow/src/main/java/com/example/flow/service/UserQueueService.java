@@ -50,4 +50,11 @@ public class UserQueueService {
                 .flatMap(member -> reactiveRedisTemplate.opsForZSet().add(USER_QUEUE_PROCEED_KEY.formatted(queue), member.getValue(), Instant.now().getEpochSecond())) // 언제 허용되었는지 타임스탬프 값을 새로 넣어줌
                 .count(); // flatMap을 통과한, 허용된 개수를 리턴
     }
+
+    // 대기 순번 리턴 API
+    public Mono<Long> getRank(final String queue, final Long userId) {
+        return reactiveRedisTemplate.opsForZSet().rank(USER_QUEUE_WAIT_KEY.formatted(queue), userId.toString())
+                .defaultIfEmpty(-1L)
+                .map(rank -> rank >= 0 ? rank + 1 : rank);
+    }
 }
