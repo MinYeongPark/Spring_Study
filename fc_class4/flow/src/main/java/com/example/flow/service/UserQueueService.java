@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuples;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
 import static com.example.flow.exception.ErrorCode.*;
@@ -29,8 +32,8 @@ public class UserQueueService {
 
     private final String USER_QUEUE_PROCEED_KEY = "user:queue:%s:proceed"; // 허용
 
-    @Value("${scheduler.enabled}")
-    private Boolean scheduling = false;
+    @Value("${scheduler.enabled}") // yml 파일의 설정이 최우선적으로 주입됨
+    private Boolean scheduling = false; // 디폴트 값이 무조건 있어야 함
 
     // 대기열 등록 API
     public Mono<Long> registerWaitQueue(final String queue, final Long userId) {
@@ -54,6 +57,14 @@ public class UserQueueService {
                 .map(rank -> rank >= 0);
     }
 
+    // 진입이 가능한 상태인지 조회하는 API (with Token)
+    public Mono<Boolean> isAllowedByToken(final String queue, final Long userId, String token) {
+        return this.generateToken(queue, userId)
+                .filter(gen -> gen.equalsIgnoreCase(token))
+                .map(i -> true)
+                .defaultIfEmpty(false);
+    }
+
     // 진입을 허용하는 API
     public Mono<Long> allowUser(final String queue, final Long count) { // count : 몇 명의 사용자를 허용할지
         // 진입을 허용하는 단계
@@ -69,6 +80,26 @@ public class UserQueueService {
         return reactiveRedisTemplate.opsForZSet().rank(USER_QUEUE_WAIT_KEY.formatted(queue), userId.toString())
                 .defaultIfEmpty(-1L)
                 .map(rank -> rank >= 0 ? rank + 1 : rank);
+    }
+
+    public Mono<String> generateToken(final String queue, final Long userId) {
+        MessageDigest digest = null;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+
+            var input = "user-queue-%s-%d".formatted(queue, userId);
+
+            byte[] encodedHash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte aByte : encodedHash) {
+                hexString.append(String.format("%02x", aByte));
+            }
+
+            return Mono.just(hexString.toString());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Scheduled(initialDelay = 5000, fixedDelay = 10000) // 애플리케이션 시작 후 5초 후에 설정된 시간 주기(10초)로 아래 메서드를 실행한다.

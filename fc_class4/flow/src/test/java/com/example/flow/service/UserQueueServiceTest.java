@@ -136,4 +136,25 @@ class UserQueueServiceTest {
                 .expectNext(-1L) // 아무것도 없으니까 -1 리턴됨
                 .verifyComplete();
     }
+
+    @Test
+    void generateToken() {
+        StepVerifier.create(userQueueService.generateToken("default", 100L))
+                .expectNext("d333a5d4eb24f3f5cdd767d79b8c01aad3cd73d3537c70dec430455d37afe4b8")
+                .verifyComplete();
+    }
+
+    @Test
+    void isAllowedByToken() {
+        StepVerifier.create(userQueueService.isAllowedByToken("default", 100L, "d333a5d4eb24f3f5cdd767d79b8c01aad3cd73d3537c70dec430455d37afe4b8"))
+                .expectNext(true)
+                .verifyComplete();
+    }
+
+    @Test
+    void isNotAllowedByToken() {
+        StepVerifier.create(userQueueService.isAllowedByToken("default", 100L, "")) // 토큰으로 빈 값을 넘겨주면
+                .expectNext(false) // 해당 토큰으로 허용 여부가 false이기 때문에 false를 기대하게 됨
+                .verifyComplete();
+    }
 }
